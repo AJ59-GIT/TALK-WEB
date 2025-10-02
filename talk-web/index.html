@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TALK-WEB - Secure Messaging</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <h1>TALK-WEB</h1>
+    <nav>
+      <ul>
+        <li><a href="#" class="active" data-tab="chats">Chats</a></li>
+        <li><a href="#" data-tab="contacts">Contacts</a></li>
+        <li><a href="#" data-tab="settings">Settings</a></li>
+      </ul>
+    </nav>
+    <div class="user-menu">
+      <button onclick="openProfile()">My Profile</button>
+      <button onclick="logout()">Logout</button>
+    </div>
+  </header>
+  <main>
+    <aside class="sidebar">
+      <div class="user-list" id="contacts-sidebar">
+        <!-- Contacts will be loaded dynamically -->
+        <div style="padding: 20px; text-align: center; color: #999;">
+          <p>Loading contacts...</p>
+        </div>
+      </div>
+    </aside>
+    <section class="chat-area" id="chats">
+      <div class="chat-header">
+        <h2>Sarah Wilson</h2>
+        <div class="chat-actions">
+          <button title="Call">&#128222;</button>
+          <button title="Video">&#128249;</button>
+          <button title="Settings">&#9881;</button>
+          <button title="Logout" onclick="logout()">&#128682;</button>
+        </div>
+      </div>
+      <div class="messages" id="messages">
+        <div class="message received">
+          <p>Hey! How's the project going? I've been working on the new features.</p>
+          <time>about 1 hour ago</time>
+        </div>
+        <div class="message sent">
+          <p>It's going really well! Just finished the authentication system.</p>
+          <time>about 1 hour ago</time>
+        </div>
+        <div class="message received">
+          <p>That sounds great! Let me know when you're ready.</p>
+          <time>5 minutes ago</time>
+        </div>
+      </div>
+      <form id="message-form" class="message-input">
+        <div id="typing-indicator" style="display: none; padding: 5px 10px; font-size: 0.85em; color: #666; font-style: italic;"></div>
+        <input type="text" id="message-input" placeholder="Type a message..." autocomplete="off" />
+        <button type="submit">&#10148;</button>
+      </form>
+    </section>
+    <section class="chat-area" id="contacts" style="display:none;">
+      <div class="chat-header">
+        <h2>Contacts</h2>
+      </div>
+      <div class="messages" id="contacts-list">
+        <div style="padding: 20px;">
+          <div style="margin-bottom: 20px;">
+            <input 
+              type="text" 
+              id="search-input" 
+              placeholder="Search users by email..." 
+              style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 1em;"
+            />
+          </div>
+          
+          <div id="search-results" style="margin-bottom: 30px;">
+            <!-- Search results will appear here -->
+          </div>
+          
+          <h3 style="margin-bottom: 15px; border-bottom: 2px solid #ddd; padding-bottom: 10px;">My Contacts</h3>
+          <div class="user-list" id="contacts-user-list">
+            <div style="padding: 20px; text-align: center; color: #999;">
+              <p>Loading contacts...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="chat-area" id="settings" style="display:none;">
+      <div class="chat-header">
+        <h2>Settings</h2>
+      </div>
+      <div class="messages" id="settings-content">
+        <div style="padding: 20px; max-width: 600px;">
+          <h2 style="margin-top: 0; margin-bottom: 20px; font-size: 1.5em; border-bottom: 2px solid #ddd; padding-bottom: 10px;">Privacy & Security</h2>
+          <div style="margin-bottom: 20px;">
+            <p style="margin: 10px 0;"><strong>Encryption Status:</strong> End-to-end encryption enabled</p>
+            <p style="margin: 10px 0; color: #28a745;">✓ All messages are encrypted</p>
+          </div>
+          <div style="margin-bottom: 30px;">
+            <p style="margin: 10px 0;"><strong>Blocked Users:</strong></p>
+            <p style="margin: 10px 0; color: #666;">No blocked users</p>
+          </div>
+
+          <h2 style="margin-bottom: 20px; font-size: 1.5em; border-bottom: 2px solid #ddd; padding-bottom: 10px;">Notifications</h2>
+          <div style="margin-bottom: 15px;">
+            <p style="margin: 10px 0;"><strong>Message Sound:</strong></p>
+            <label style="display: flex; align-items: center; cursor: pointer;">
+              <input type="checkbox" checked style="margin-right: 10px; width: 18px; height: 18px;">
+              <span>Enable message notification sounds</span>
+            </label>
+          </div>
+          <div style="margin-bottom: 30px;">
+            <p style="margin: 10px 0;"><strong>Desktop Alerts:</strong></p>
+            <label style="display: flex; align-items: center; cursor: pointer;">
+              <input type="checkbox" checked style="margin-right: 10px; width: 18px; height: 18px;">
+              <span>Show desktop notifications for new messages</span>
+            </label>
+          </div>
+
+          <h2 style="margin-bottom: 20px; font-size: 1.5em; border-bottom: 2px solid #ddd; padding-bottom: 10px;">Appearance</h2>
+          <div style="margin-bottom: 20px;">
+            <p style="margin: 10px 0;"><strong>Theme:</strong></p>
+            <div style="margin: 10px 0;">
+              <label style="display: block; margin: 8px 0; cursor: pointer;">
+                <input type="radio" name="theme" value="light" checked style="margin-right: 10px;">
+                <span>Light Mode</span>
+              </label>
+              <label style="display: block; margin: 8px 0; cursor: pointer;">
+                <input type="radio" name="theme" value="dark" style="margin-right: 10px;">
+                <span>Dark Mode</span>
+              </label>
+              <label style="display: block; margin: 8px 0; cursor: pointer;">
+                <input type="radio" name="theme" value="auto" style="margin-right: 10px;">
+                <span>Auto (System Default)</span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="chat-area" id="profile" style="display:none;">
+      <div class="chat-header">
+        <h2>My Profile</h2>
+      </div>
+      <form id="profile-form" class="message-input">
+        <div class="form-group">
+          <label for="profile-email">Email</label>
+          <input type="email" id="profile-email" name="email" required />
+        </div>
+        <div class="form-group">
+          <label for="profile-password">New Password</label>
+          <input type="password" id="profile-password" name="password" />
+        </div>
+        <button type="submit" class="btn">Update Profile</button>
+      </form>
+    </section>
+  </main>
+  <footer>
+    <p>TALK-WEB © 2025 - Secure Messaging</p>
+  </footer>
+  
+  <!-- Socket.IO Client Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.4/socket.io.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
